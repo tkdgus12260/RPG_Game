@@ -14,6 +14,8 @@ public class CanvasUI : MonoBehaviour
     public GameObject dragonHpBar;
     public GameObject alteregoHpBar;
 
+    public Text playerName;
+
     public bool activePause = false;
     private bool activeInventory = false;
     private bool cursorHide = false;
@@ -34,6 +36,7 @@ public class CanvasUI : MonoBehaviour
         inven.onChangeItem += pickUpSlotUI;
         inventoryPanel.SetActive(activeInventory);
         pausePanel.SetActive(activePause);
+        playerName.text = DataManager.Inst.Player.name;
     }
 
     private void SlotChange(int var)
@@ -140,7 +143,7 @@ public class CanvasUI : MonoBehaviour
 
     public void Save()
     {
-
+        DataManager.Inst.SaveData();
     }
 
     public void Exit()

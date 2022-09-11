@@ -33,22 +33,22 @@ public class Player : MonoBehaviour, IControllable, IStatus
 
     public float HP
     {
-        get => curHealth;
+        get => DataManager.Inst.Player.HP;
         set
         {
-            curHealth = Mathf.Clamp( value, 0, maxHealth);
+            DataManager.Inst.Player.HP = Mathf.Clamp( value, 0, DataManager.Inst.Player.MaxHP);
             OnHealthChange?.Invoke();
         }
 
     }
-    public float MaxHP { get => maxHealth; }
+    public float MaxHP { get => DataManager.Inst.Player.MaxHP; }
 
     public float Level
     {
-        get => playerLevel;
+        get => DataManager.Inst.Player.level;
         set
         {
-            playerLevel = Mathf.Clamp(value, 1, 99);
+            DataManager.Inst.Player.level = Mathf.Clamp(value, 1, 99);
             OnLevelChange?.Invoke();
         }
 
@@ -60,15 +60,15 @@ public class Player : MonoBehaviour, IControllable, IStatus
 
     public float EXP
     {
-        get => playerExp;
+        get => DataManager.Inst.Player.EXP;
         set
         {
-            playerExp = Mathf.Clamp(value, 0, maxExp);
+            DataManager.Inst.Player.EXP = Mathf.Clamp(value, 0, DataManager.Inst.Player.MaxEXP);
             OnExpChange?.Invoke();
         }
     }
 
-    public float MaxEXP { get => maxExp; }
+    public float MaxEXP { get => DataManager.Inst.Player.MaxEXP; }
    
     private Rigidbody rigid = null;
     private Camera _camera = null;
@@ -84,11 +84,11 @@ public class Player : MonoBehaviour, IControllable, IStatus
     // 사운드 매니저
     private SoundManager soundManager = null;
 
-    public float playerLevel = 1.0f;
-    public float curHealth = 200.0f;
-    public float maxHealth = 200.0f;
-    public float playerExp = 0.0f;
-    public float maxExp = 100.0f;
+    //public float playerLevel = 1.0f;
+    //public float DataManager.Inst.Player.HP = 200.0f;
+    //public float maxHealth = 200.0f;
+    //public float playerExp = 0.0f;
+    //public float maxExp = 100.0f;
 
     private bool toggleCameraRotation;
     private bool isAttack;
@@ -118,6 +118,11 @@ public class Player : MonoBehaviour, IControllable, IStatus
         OnJump = Jump;
         OnInventory = canvasUI.InventoryOnOff;
         OnPause = canvasUI.PauseOnOff;
+
+        //curHealth = DataManager.Inst.Player.HP;
+        //maxHealth = DataManager.Inst.Player.MaxHP;
+        //playerExp = DataManager.Inst.Player.EXP;
+        //playerLevel = DataManager.Inst.Player.level;
     }
 
     private void Start()
@@ -167,9 +172,9 @@ public class Player : MonoBehaviour, IControllable, IStatus
     // 플레이어 스테이터스 새로고침
     private void RefreshStatus()
     {
-        HP = curHealth;
-        Level = playerLevel;
-        EXP = playerExp;
+        HP = DataManager.Inst.Player.HP;
+        Level = DataManager.Inst.Player.level;
+        EXP = DataManager.Inst.Player.EXP;
 
     }
 
@@ -298,32 +303,32 @@ public class Player : MonoBehaviour, IControllable, IStatus
     // 플레이어 레벨 업
     private void LevelUp()
     {
-        if (maxExp <= playerExp)
+        if (DataManager.Inst.Player.MaxEXP <= DataManager.Inst.Player.EXP)
         {
-            playerLevel ++;
-            playerExp = 0.0f;
-            maxExp *= 1.3f;
-            maxHealth += 100.0f;
-            curHealth = maxHealth;
+            DataManager.Inst.Player.level ++;
+            DataManager.Inst.Player.EXP = 0.0f;
+            DataManager.Inst.Player.MaxEXP *= 1.3f;
+            DataManager.Inst.Player.MaxHP += 100.0f;
+            DataManager.Inst.Player.HP = DataManager.Inst.Player.MaxHP;
         }
     }
 
     // 플레이어 피격 함수
     public void TakeDamage(float damage)
     {
-        curHealth -= damage;
+        DataManager.Inst.Player.HP -= damage;
 
-        if(curHealth <= 0.0f)
+        if(DataManager.Inst.Player.HP <= 0.0f)
         {
             Die();
         }
-        HP = curHealth;
+        HP = DataManager.Inst.Player.HP;
     }
 
     // 플레이어 경험치 습득
     public void TakeExp(float exp)
     {
-        playerExp += exp;
+        DataManager.Inst.Player.EXP += exp;
     }
 
     // 플레이어 사망

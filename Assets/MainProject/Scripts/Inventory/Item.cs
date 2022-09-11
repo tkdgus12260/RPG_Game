@@ -23,7 +23,7 @@ public class Item
 
         foreach(ItemEffect eft in efts)
         {
-            if (GameManager.Inst.MainPlayer.curHealth < GameManager.Inst.MainPlayer.maxHealth)
+            if (DataManager.Inst.Player.HP < DataManager.Inst.Player.MaxHP)
             {
                 isUsed = eft.ExecuteRole();
             }

@@ -11,7 +11,7 @@ public class ItemHealingEffect : ItemEffect
     {
         Debug.Log("힐링");
 
-        GameManager.Inst.MainPlayer.curHealth += healingPoint;
+        DataManager.Inst.Player.HP += healingPoint;
 
 
         return true;

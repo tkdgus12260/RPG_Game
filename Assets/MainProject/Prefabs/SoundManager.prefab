@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -47,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSounds:
   - soundName: MenuBGM
-    clip: {fileID: 8300000, guid: dc08636b6ececca44a2b7499f3192b52, type: 3}
+    clip: {fileID: 8300000, guid: 3007a850115c4d34683e87a457c3b418, type: 3}
   - soundName: MainBGM
     clip: {fileID: 8300000, guid: b64f34617d5794db08b6c7d2dac9fea7, type: 3}
   - soundName: BossBGM

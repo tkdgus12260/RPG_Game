@@ -4,8 +4,7 @@ using UnityEngine;
 
 public enum BTNType
 {
-    New,
-    Continue,
+    Play,
     Quit
 }
 
