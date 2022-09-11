@@ -40,14 +40,9 @@ public class SoundManager : MonoBehaviour
 
     public AudioSource bgmPlayer;
 
-    private void Start()
+    public void PlayBGM(int bgmNum)
     {
-        PlayBGM();
-    }
-
-    public void PlayBGM()
-    {
-        bgmPlayer.clip = bgmSounds[1].clip;
+        bgmPlayer.clip = bgmSounds[bgmNum].clip;
         bgmPlayer.Play();
     }
 }

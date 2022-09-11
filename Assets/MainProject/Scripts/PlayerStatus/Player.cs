@@ -81,6 +81,8 @@ public class Player : MonoBehaviour, IControllable, IStatus
 
     // 인벤토리
     private CanvasUI canvasUI = null;
+    // 사운드 매니저
+    private SoundManager soundManager = null;
 
     public float playerLevel = 1.0f;
     public float curHealth = 200.0f;
@@ -94,10 +96,12 @@ public class Player : MonoBehaviour, IControllable, IStatus
     public bool isLanding;
     public bool isGround;
     public bool isJump;
+    private bool isDodge;
 
     public float moveSpeed = 5.0f;
     public float runSpeed = 8.0f;
     public float jumpPower = 5.0f;
+    public float dodgePower = 7.0f;
     private float smoothness = 10f;
 
     private void Awake()
@@ -107,12 +111,21 @@ public class Player : MonoBehaviour, IControllable, IStatus
         _camera = Camera.main;
         anim = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        soundManager = FindObjectOfType<SoundManager>();
 
         OnAttack = Attack;
-        OnRolling = Rolling;
+        OnRolling = Dodge;
         OnJump = Jump;
         OnInventory = canvasUI.InventoryOnOff;
         OnPause = canvasUI.PauseOnOff;
+    }
+
+    private void Start()
+    {
+        // 현재 실행중인 bgm 끄기
+        soundManager.bgmPlayer.Stop();
+        // 1번 bgm 실행
+        soundManager.PlayBGM(1);
     }
 
     private void Update()
@@ -226,11 +239,23 @@ public class Player : MonoBehaviour, IControllable, IStatus
     }
 
     // 플레이어 회피
-    private void Rolling()
+    private void Dodge()
     {
-        weapon.enabled = false;
-        anim.SetTrigger("onRolling");
-        rigid.AddForce(transform.forward * 7, ForceMode.Impulse);
+        if (!isDodge)
+        {
+            weapon.enabled = false;
+            anim.SetTrigger("onRolling");
+            rigid.AddForce(transform.forward * dodgePower, ForceMode.Impulse);
+        }
+    }
+
+    public void DodgeTrue()
+    {
+        isDodge = true;
+    }
+    public void DodgeFalse()
+    {
+        isDodge = false;
     }
 
     // 플레이어 착지 확인
