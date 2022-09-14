@@ -28,7 +28,6 @@ public class BossEnemy : MonoBehaviour
     private Rigidbody rigid = null;
     private NavMeshAgent nav = null;
     private Animator ani = null;
-    private Player player = null;
     private EnemySpawn spawn = null;
     private BossEnemyUI bossEnemyUI = null;
     private CanvasUI canvasUI = null;
@@ -54,7 +53,6 @@ public class BossEnemy : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         nav = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        player = FindObjectOfType<Player>();
         spawn = FindObjectOfType<EnemySpawn>();
         bossEnemyUI = FindObjectOfType<BossEnemyUI>();
         canvasUI = FindObjectOfType<CanvasUI>();
@@ -67,13 +65,13 @@ public class BossEnemy : MonoBehaviour
 
         FollowTarget();
         RushAttackDelay();
-        //ChargingAttack();
+        ChargingAttack();
         StartCoroutine(AlterEgo());
 
         if (nav.enabled)
         {
             isDelay = true;
-            nav.SetDestination(player.transform.position);
+            nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
             ani.SetBool("isWalk", true);
         }
     }
@@ -89,7 +87,7 @@ public class BossEnemy : MonoBehaviour
     // 몬스터 플레이어 인식 함수
     private void FollowTarget()
     {
-        float targetDistance = Vector3.Distance(transform.position, player.transform.position);
+        float targetDistance = Vector3.Distance(transform.position, GameManager.Inst.MainPlayer.transform.position);
         float spawnDistance = Vector3.Distance(transform.position, spawn.transform.position);
 
         // 타겟이 인식 거리 내에 감지 되었을 때 실행
@@ -109,7 +107,7 @@ public class BossEnemy : MonoBehaviour
         // 스폰 포인트 도착 시
         else if (spawnDistance < 0.5f)
         {
-            transform.LookAt(player.transform);
+            transform.LookAt(GameManager.Inst.MainPlayer.transform);
             isOut = false;
             ani.SetBool("isWalk", false);
             canvasUI.DragonHpBarOff();
@@ -143,7 +141,7 @@ public class BossEnemy : MonoBehaviour
     IEnumerator Attack()
     {
         // 공격 시 플레이어를 바라보며 공격
-        transform.LookAt(player.transform);
+        transform.LookAt(GameManager.Inst.MainPlayer.transform);
 
         yield return new WaitForSeconds(0.5f);
         isAttack = true;
@@ -272,7 +270,7 @@ public class BossEnemy : MonoBehaviour
     IEnumerator Sandstorm()
     {
         chargingSandstorm.SetActive(true);
-        player.TakeDamage(sandstormDamage);
+        GameManager.Inst.MainPlayer.TakeDamage(sandstormDamage);
         yield return new WaitForSeconds(5.0f);
 
         chargingSandstorm.SetActive(false);

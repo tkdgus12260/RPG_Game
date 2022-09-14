@@ -118,11 +118,7 @@ MonoBehaviour:
   enemyHitClip: {fileID: 1450233721}
   swordClip: {fileID: 8179801003461896027}
   footClip: {fileID: 25799800412476553}
-  playerLevel: 1
-  curHealth: 100000
-  maxHealth: 100000
-  playerExp: 0
-  maxExp: 100
+  player: {fileID: 5757521670126006557}
   isLanding: 0
   isGround: 0
   isJump: 0

@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         mainPlayer = FindObjectOfType<Player>();
         mainCamera = FindObjectOfType<CameraMovement>();

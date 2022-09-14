@@ -80,15 +80,7 @@ public class Player : MonoBehaviour, IControllable, IStatus
     public AudioSource footClip = null;
 
     // 인벤토리
-    private CanvasUI canvasUI = null;
-    // 사운드 매니저
-    private SoundManager soundManager = null;
-
-    //public float playerLevel = 1.0f;
-    //public float DataManager.Inst.Player.HP = 200.0f;
-    //public float maxHealth = 200.0f;
-    //public float playerExp = 0.0f;
-    //public float maxExp = 100.0f;
+    public CanvasUI _canvasUI = null;
 
     private bool toggleCameraRotation;
     private bool isAttack;
@@ -106,31 +98,16 @@ public class Player : MonoBehaviour, IControllable, IStatus
 
     private void Awake()
     {
-        canvasUI = FindObjectOfType<CanvasUI>();
         rigid = GetComponent<Rigidbody>();
         _camera = Camera.main;
         anim = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        soundManager = FindObjectOfType<SoundManager>();
 
         OnAttack = Attack;
         OnRolling = Dodge;
         OnJump = Jump;
-        OnInventory = canvasUI.InventoryOnOff;
-        OnPause = canvasUI.PauseOnOff;
-
-        //curHealth = DataManager.Inst.Player.HP;
-        //maxHealth = DataManager.Inst.Player.MaxHP;
-        //playerExp = DataManager.Inst.Player.EXP;
-        //playerLevel = DataManager.Inst.Player.level;
-    }
-
-    private void Start()
-    {
-        // 현재 실행중인 bgm 끄기
-        soundManager.bgmPlayer.Stop();
-        // 1번 bgm 실행
-        soundManager.PlayBGM(1);
+        OnInventory = _canvasUI.InventoryOnOff;
+        OnPause = _canvasUI.PauseOnOff;
     }
 
     private void Update()
@@ -268,8 +245,6 @@ public class Player : MonoBehaviour, IControllable, IStatus
     {
         isGround = Physics.Raycast(transform.position + Vector3.up * capsuleCollider.bounds.extents.y,
                                     Vector3.down, capsuleCollider.bounds.extents.y + 0.1f);
-        Debug.DrawRay(transform.position, Vector3.down, Color.red);
-
         if (isGround && isJump)
         {
             isJump = false;

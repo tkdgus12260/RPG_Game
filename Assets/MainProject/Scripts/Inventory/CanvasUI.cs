@@ -148,7 +148,8 @@ public class CanvasUI : MonoBehaviour
 
     public void Exit()
     {
-        SceneManager.LoadScene("Menu");
+        //Time.timeScale = 0.0f;
+        SceneManager.LoadScene(0);
     }
 
     // 인벤토리 칸 추가

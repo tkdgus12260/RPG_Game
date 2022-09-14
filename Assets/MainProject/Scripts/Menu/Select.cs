@@ -84,6 +84,6 @@ public class Select : MonoBehaviour
             DataManager.Inst.SaveData();
         }
 
-        SceneManager.LoadScene("Loding");
+        SceneManager.LoadScene(1);
     }
 }

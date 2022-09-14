@@ -21,7 +21,6 @@ public class BossAlterEgo : MonoBehaviour
     private Rigidbody rigid = null;
     private NavMeshAgent nav = null;
     private Animator ani = null;
-    private Player player = null;
     private EnemySpawn spawn = null;
     private CanvasUI canvasUI = null;
 
@@ -41,7 +40,6 @@ public class BossAlterEgo : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         nav = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        player = FindObjectOfType<Player>();
         spawn = FindObjectOfType<EnemySpawn>();
         canvasUI = FindObjectOfType<CanvasUI>();
         mainDragon = FindObjectOfType<BossEnemy>();
@@ -56,7 +54,7 @@ public class BossAlterEgo : MonoBehaviour
         if (nav.enabled)
         {
             isDelay = true;
-            nav.SetDestination(player.transform.position);
+            nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
             ani.SetBool("isWalk", true);
         }
     }
@@ -88,7 +86,7 @@ public class BossAlterEgo : MonoBehaviour
     IEnumerator Attack()
     {
         // 공격 시 플레이어를 바라보며 공격
-        transform.LookAt(player.transform);
+        transform.LookAt(GameManager.Inst.MainPlayer.transform);
 
         yield return new WaitForSeconds(0.5f);
         isAttack = true;
@@ -173,7 +171,7 @@ public class BossAlterEgo : MonoBehaviour
     {
         if (other.tag == "Weapon")
         {
-            player.enemyHitClip.Play();
+            GameManager.Inst.MainPlayer.enemyHitClip.Play();
             Sword weapon = other.GetComponent<Sword>();
             curHealth -= weapon.damage;
 

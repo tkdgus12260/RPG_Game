@@ -20,7 +20,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         switch (currenType)
         {
             case BTNType.Play:
-                SceneManager.LoadScene("Loding");
+                SceneManager.LoadScene("MainScene");
                 break;
             case BTNType.Quit:
                 Application.Quit();

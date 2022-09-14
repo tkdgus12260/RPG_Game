@@ -16,9 +16,10 @@ public class Controller : MonoBehaviour
         actions = new PlayerMainControls();
     }
 
-    private void OnEnable()
+    public void RegisterInputAction()
     {
         actions.Player.Enable();
+
         actions.Player.Move.performed += OnMoveInput;
         actions.Player.Move.canceled += OnMoveInput;
 
@@ -39,9 +40,8 @@ public class Controller : MonoBehaviour
         SetMouse(GameManager.Inst.MainCamera as IControllable);
     }
 
-    private void OnDisable()
+    public void UnRegisterInputAction()
     {
-
         actions.Player.Move.performed -= OnMoveInput;
         actions.Player.Move.canceled -= OnMoveInput;
 

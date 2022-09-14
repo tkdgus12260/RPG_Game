@@ -6,19 +6,13 @@ public class BossTreeEffect : MonoBehaviour
 {
     public float curHealth = 100.0f;
 
-    private Player player = null;
     public GameObject treeObj = null;
-
-    private void Awake()
-    {
-        player = FindObjectOfType<Player>();
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Weapon")
         {
-            player.enemyHitClip.Play();
+            GameManager.Inst.MainPlayer.enemyHitClip.Play();
             Sword weapon = other.GetComponent<Sword>();
             curHealth -= weapon.damage;
 

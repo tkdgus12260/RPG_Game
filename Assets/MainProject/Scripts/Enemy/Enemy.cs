@@ -15,7 +15,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody rigid;
     private NavMeshAgent nav;
     private Animator ani;
-    private Player player;
     private EnemySpawn spawn;
     public GameObject dropItem;
 
@@ -34,7 +33,6 @@ public class Enemy : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         nav = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        player = FindObjectOfType<Player>();
         spawn = FindObjectOfType<EnemySpawn>();
     }
 
@@ -44,7 +42,7 @@ public class Enemy : MonoBehaviour
 
         if (nav.enabled)
         {
-            nav.SetDestination(player.transform.position);
+            nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
             ani.SetBool("isWalk", true);
         }
     }
@@ -61,7 +59,7 @@ public class Enemy : MonoBehaviour
             Sword weapon = other.GetComponent<Sword>();
             curHealth -= weapon.damage;
             StartCoroutine(OnDamage());
-            player.enemyHitClip.Play();
+            GameManager.Inst.MainPlayer.enemyHitClip.Play();
         }
     }
 
@@ -87,7 +85,7 @@ public class Enemy : MonoBehaviour
 
         ani.SetTrigger("onDie");
         gameObject.layer = 7;
-        player.TakeExp(takeExp);
+        GameManager.Inst.MainPlayer.TakeExp(takeExp);
 
         switch (enemyType)
         {
@@ -110,7 +108,7 @@ public class Enemy : MonoBehaviour
     // 몬스터 플레이어 인식 함수
     private void FollowTarget()
     {
-        float targetDistance = Vector3.Distance(transform.position, player.transform.position);
+        float targetDistance = Vector3.Distance(transform.position, GameManager.Inst.MainPlayer.transform.position);
         float spawnDistance = Vector3.Distance(transform.position, spawn.transform.position);
 
         if (targetDistance < attackDis && !isOut && !isDie)
@@ -170,7 +168,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Attack()
     {
         isAttack = true;
-        transform.LookAt(player.transform);
+        transform.LookAt(GameManager.Inst.MainPlayer.transform.position);
 
         switch (enemyType)
         {
