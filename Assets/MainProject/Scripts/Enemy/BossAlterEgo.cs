@@ -47,21 +47,27 @@ public class BossAlterEgo : MonoBehaviour
 
     private void Update()
     {
-        MainDragonDie();
-        MainDragonReturn();
-        RushAttackDelay();
-
-        if (nav.enabled)
+        if (!GameManager.Inst.MainPlayer.isDeath)
         {
-            isDelay = true;
-            nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
-            ani.SetBool("isWalk", true);
+            MainDragonDie();
+            MainDragonReturn();
+            RushAttackDelay();
+
+            if (nav.enabled)
+            {
+                isDelay = true;
+                nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
+                ani.SetBool("isWalk", true);
+            }
         }
+
+        TargetDeath();
     }
 
     private void FixedUpdate()
     {
-        Targetting();
+        if(!GameManager.Inst.MainPlayer.isDeath)
+            Targetting();
     }
 
     // 되돌아갈 스폰 포인트 위치 저장.
@@ -199,6 +205,17 @@ public class BossAlterEgo : MonoBehaviour
         {
             Destroy(gameObject);
             canvasUI.AlterDragonHpBarOff();
+        }
+    }
+
+    //플레이어 사망 시
+    private void TargetDeath()
+    {
+        if (GameManager.Inst.MainPlayer.isDeath)
+        {
+            nav.enabled = false;
+            ani.SetBool("isWalk", false);
+            ani.SetTrigger("onJump");
         }
     }
 

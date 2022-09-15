@@ -38,18 +38,24 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        FollowTarget();
-
-        if (nav.enabled)
+        if (!GameManager.Inst.MainPlayer.isDeath)
         {
-            nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
-            ani.SetBool("isWalk", true);
+            FollowTarget();
+
+            if (nav.enabled)
+            {
+                nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
+                ani.SetBool("isWalk", true);
+            }
         }
+
+        TargetDeath();
     }
 
     private void FixedUpdate()
     {
-        Targetting();
+        if(!GameManager.Inst.MainPlayer.isDeath)
+            Targetting();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -194,5 +200,14 @@ public class Enemy : MonoBehaviour
     public void AttackOff()
     {
         meleeArea.enabled = false;
+    }
+
+    private void TargetDeath()
+    {
+        if (GameManager.Inst.MainPlayer.isDeath)
+        {
+            nav.enabled = false;
+            ani.SetBool("isWalk", false);
+        }
     }
 }

@@ -62,23 +62,28 @@ public class BossEnemy : MonoBehaviour
 
     private void Update()
     {
-
-        FollowTarget();
-        RushAttackDelay();
-        ChargingAttack();
-        StartCoroutine(AlterEgo());
-
-        if (nav.enabled)
+        if (!GameManager.Inst.MainPlayer.isDeath)
         {
-            isDelay = true;
-            nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
-            ani.SetBool("isWalk", true);
+            FollowTarget();
+            RushAttackDelay();
+            //ChargingAttack();
+            StartCoroutine(AlterEgo());
+
+            if (nav.enabled)
+            {
+                isDelay = true;
+                nav.SetDestination(GameManager.Inst.MainPlayer.transform.position);
+                ani.SetBool("isWalk", true);
+            }
         }
+
+        TargetDeath();
     }
 
     private void FixedUpdate()
     {
-        Targetting();
+        if(!GameManager.Inst.MainPlayer.isDeath)
+            Targetting();
     }
 
     //되돌아갈 스폰 포인트 위치 저장.
@@ -293,6 +298,16 @@ public class BossEnemy : MonoBehaviour
         }
     }
 
+    private void TargetDeath()
+    {
+        if (GameManager.Inst.MainPlayer.isDeath)
+        {
+            nav.enabled = false;
+            ani.SetBool("isWalk", false);
+            ani.SetTrigger("onJump");
+        }
+    }
+
     // 몬스터 피격 판정
     private void OnTriggerEnter(Collider other)
     {
@@ -312,6 +327,7 @@ public class BossEnemy : MonoBehaviour
     private void OnDie()
     {
         isDie = true;
+        nav.enabled = false;
         canvasUI.DragonHpBarOff();
         ani.SetTrigger("onDie");
         Destroy(gameObject, 2.5f);

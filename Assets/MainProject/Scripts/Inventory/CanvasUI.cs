@@ -13,6 +13,7 @@ public class CanvasUI : MonoBehaviour
     public GameObject pausePanel;
     public GameObject dragonHpBar;
     public GameObject alteregoHpBar;
+    public GameObject gameoverPanel;
 
     public Text playerName;
 
@@ -117,6 +118,14 @@ public class CanvasUI : MonoBehaviour
         Cursor.visible = cursorHide;
     }
 
+    // 플레이어 사망 시 호출 될 함수
+    public void GameOver()
+    {
+        gameoverPanel.SetActive(true);
+        SoundManager.Inst.bgmPlayer.Stop();
+        SoundManager.Inst.PlayBGM(4);
+    }
+
     // 드래곤 hp바 켜기
     public void DragonHpBarOn()
     {
@@ -146,7 +155,7 @@ public class CanvasUI : MonoBehaviour
         DataManager.Inst.SaveData();
     }
 
-    public void Exit()
+    public void MenuScene()
     {
         //Time.timeScale = 0.0f;
         SceneManager.LoadScene(0);

@@ -78,17 +78,19 @@ public class Player : MonoBehaviour, IControllable, IStatus
     public AudioSource enemyHitClip = null;
     public AudioSource swordClip = null;
     public AudioSource footClip = null;
+    public AudioSource deathClip = null;
 
     // 인벤토리
     public CanvasUI _canvasUI = null;
 
     private bool toggleCameraRotation;
-    private bool isAttack;
+    public bool isAttack;
     private bool onRolling;
     public bool isLanding;
     public bool isGround;
     public bool isJump;
     private bool isDodge;
+    public bool isDeath;
 
     public float moveSpeed = 5.0f;
     public float runSpeed = 8.0f;
@@ -112,8 +114,12 @@ public class Player : MonoBehaviour, IControllable, IStatus
 
     private void Update()
     {
+        if (!isDeath)
+        {
+            Move();
+        }
+
         RefreshStatus();
-        Move();
         IsGround();
         LevelUp();
     }
@@ -136,23 +142,12 @@ public class Player : MonoBehaviour, IControllable, IStatus
         
     }
 
-    // 마우스에 따른 플레이어 각도
-    private void MouseControl()
-    {
-        
-            Vector3 playerRotate = Vector3.Scale(_camera.transform.forward, new Vector3(1, 0, 1));
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                  Quaternion.LookRotation(playerRotate),
-                                                  Time.deltaTime * smoothness);
-    }
-
     // 플레이어 스테이터스 새로고침
     private void RefreshStatus()
     {
         HP = DataManager.Inst.Player.HP;
         Level = DataManager.Inst.Player.level;
         EXP = DataManager.Inst.Player.EXP;
-
     }
 
     // 플레이어 이동
@@ -200,6 +195,11 @@ public class Player : MonoBehaviour, IControllable, IStatus
         footClip.Play();
     }
 
+    public void DeathClip()
+    {
+        deathClip.Play();
+    }
+
     // 공격 시 함수
     private void Attack()
     {
@@ -211,12 +211,18 @@ public class Player : MonoBehaviour, IControllable, IStatus
     {
         swordClip.Play();
         weapon.enabled = true;
-        isAttack = true;
     }
-
     public void OffAttackCollision()
     {
         weapon.enabled = false;
+    }
+    // 공격 시 이동 불가
+    public void IsAttackOn()
+    {
+        isAttack = true;
+    }
+    public void IsAttackOff()
+    {
         isAttack = false;
     }
 
@@ -295,7 +301,7 @@ public class Player : MonoBehaviour, IControllable, IStatus
 
         if(DataManager.Inst.Player.HP <= 0.0f)
         {
-            Die();
+            StartCoroutine(Die());
         }
         HP = DataManager.Inst.Player.HP;
     }
@@ -307,8 +313,13 @@ public class Player : MonoBehaviour, IControllable, IStatus
     }
 
     // 플레이어 사망
-    private void Die()
+    IEnumerator Die()
     {
-
+        isDeath = true;
+        anim.SetTrigger("onDeath");
+        yield return new WaitForSeconds(4.0f);
+        _canvasUI.GameOver();
+        yield return new WaitForSeconds(4.0f);
+        _canvasUI.MenuScene();
     }
 }
