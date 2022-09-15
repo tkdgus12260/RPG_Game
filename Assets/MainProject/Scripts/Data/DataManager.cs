@@ -12,6 +12,7 @@ public class PlayerData
     public float MaxHP = 100.0f;
     public float EXP = 0.0f;
     public float MaxEXP = 100.0f;
+    public Vector3 playerPos = new Vector3(-220, 0, -230);
 }
 
 public class DataManager : MonoBehaviour

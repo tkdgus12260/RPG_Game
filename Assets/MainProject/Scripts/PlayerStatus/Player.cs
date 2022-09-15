@@ -110,6 +110,9 @@ public class Player : MonoBehaviour, IControllable, IStatus
         OnJump = Jump;
         OnInventory = _canvasUI.InventoryOnOff;
         OnPause = _canvasUI.PauseOnOff;
+
+        //저장 된 플레이어 위치
+        this.transform.position = DataManager.Inst.Player.playerPos;
     }
 
     private void Update()
@@ -148,6 +151,12 @@ public class Player : MonoBehaviour, IControllable, IStatus
         HP = DataManager.Inst.Player.HP;
         Level = DataManager.Inst.Player.level;
         EXP = DataManager.Inst.Player.EXP;
+    }
+
+    // 플레이어 위치 저장
+    public void SavePlayerPos()
+    {
+        DataManager.Inst.Player.playerPos = this.transform.position;
     }
 
     // 플레이어 이동

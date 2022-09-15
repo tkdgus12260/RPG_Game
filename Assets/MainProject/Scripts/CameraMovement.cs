@@ -52,6 +52,11 @@ public class CameraMovement : MonoBehaviour, IControllable
     public float finalDistance;
     public float smoothness = 10.0f;
 
+    private void Awake()
+    {
+        this.transform.position = DataManager.Inst.Player.playerPos;
+    }
+
     private void Start()
     {
         rotX = transform.localRotation.eulerAngles.x;
